@@ -34,7 +34,7 @@
                   (str " " (->attrs ?attrs))
                   "")]
       `(str ~(format "<%s%s>" tag attrs)
-            ~@(map #(list 'html %) children)
+            ~@(map #(list `html %) children)
             ~(format "</%s>" tag)))
     (or (string? form)
         (number? form)) form
