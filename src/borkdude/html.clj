@@ -23,9 +23,10 @@
                                   :else (str v))))
                  m)))
 
-(defmacro html [form]
-  (cond (and (vector? form)
-           (keyword? (first form)))
+(defn html [form]
+  (cond
+    (and (vector? form)
+         (keyword? (first form)))
     (let [[tag ?attrs & children] form
           tag (name tag)
           attrs? (map? ?attrs)
@@ -34,8 +35,9 @@
                   (str " " (->attrs ?attrs))
                   "")]
       `(str ~(format "<%s%s>" tag attrs)
-            ~@(map #(list `html %) children)
+            ~@(map html children)
             ~(format "</%s>" tag)))
+
     (or (string? form)
         (number? form)) form
     :else `(inspect ~form)))

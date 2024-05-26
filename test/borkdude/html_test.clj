@@ -4,19 +4,23 @@
    [clojure.test :as t]))
 
 (t/deftest ok
-  (t/are [expected form]
-      (= expected (sut/html form))
+  (t/are [expected actual]
+      (= expected actual)
 
     "<div></div>"
-    [:div]
+    #html [:div]
 
     "<a href=\"#\">Hi</a>"
-    [:a {:href "#"} "Hi"]
+    #html [:a {:href "#"} "Hi"]
 
     ;; XHTML5?
     "<hr></hr>"
-    [:hr]
+    #html [:hr]
+
+    "<div><div>1</div><div>2</div></div>"
+    #html [:div (for [i [1 2]]
+                  #html [:div i])]
 
     #_#_
     "<div>&lt;script&gt;</div>"
-    [:div "<script>"]))
+    #html [:div "<script>"]))
