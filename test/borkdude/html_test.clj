@@ -1,21 +1,25 @@
 (ns borkdude.html-test
   (:require
-   [borkdude.html :as sut]
+   [borkdude.html :refer [html]]
    [clojure.test :as t]))
 
 (t/deftest ok
   (t/are [expected form]
-      (= expected (sut/html form))
+      (= expected form)
 
     "<div></div>"
-    [:div]
+    (html [:div])
 
     "<a href=\"#\">Hi</a>"
-    [:a {:href "#"} "Hi"]
+    (html [:a {:href "#"} "Hi"])
 
     ;; XHTML5?
     "<hr></hr>"
-    [:hr]
+    (html [:hr])
 
     "<div>&lt;script&gt;</div>"
-    [:div "<script>"]))
+    (html [:div "<script>"])
+
+    "<div>&lt;script&gt;</div>"
+    (let [x "<script>"]
+      (html [:div x]))))

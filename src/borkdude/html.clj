@@ -4,18 +4,20 @@
 (defn- escape-html
   "From hiccup"
   [text]
-  (.. ^String (str text)
-      (replace "&"  "&amp;")
-      (replace "<"  "&lt;")
-      (replace ">"  "&gt;")
-      (replace "\"" "&quot;")
-      (replace "'" "&apos;" #_(if (= *html-mode* :sgml) "&#39;" "&apos;"))))
+  (->
+   (.. ^String (str text)
+       (replace "&"  "&amp;")
+       (replace "<"  "&lt;")
+       (replace ">"  "&gt;")
+       (replace "\"" "&quot;")
+       (replace "'" "&apos;" #_(if (= *html-mode* :sgml) "&#39;" "&apos;")))))
 
 (defn inspect [x]
-  (if (and (not (string? x))
-           (sequential? x))
+  (cond
+    (string? x) (escape-html x)
+    (sequential? x)
     (str/join "" x)
-    x))
+    :else x))
 
 (defn- ->css [m]
   (str/join "\n"
@@ -34,8 +36,9 @@
                  m)))
 
 (defmacro html [form]
-  (cond (and (vector? form)
-           (keyword? (first form)))
+  (cond
+    (and (vector? form)
+         (keyword? (first form)))
     (let [[tag ?attrs & children] form
           tag (name tag)
           attrs? (map? ?attrs)
