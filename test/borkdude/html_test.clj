@@ -10,6 +10,9 @@
     "<div></div>"
     (html [:div])
 
+    "<div></div>"
+    #html [:div]
+
     "<a href=\"#\">Hi</a>"
     (html [:a {:href "#"} "Hi"])
 
@@ -22,4 +25,6 @@
 
     "<div>&lt;script&gt;</div>"
     (let [x "<script>"]
-      (html [:div x]))))
+      (html [:div x]))
+
+    ))

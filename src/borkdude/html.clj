@@ -35,7 +35,7 @@
                                   :else (str v))))
                  m)))
 
-(defmacro html [form]
+(defn reader [form]
   (cond
     (and (vector? form)
          (keyword? (first form)))
@@ -52,6 +52,9 @@
     (string? form) (escape-html form)
     (number? form) form
     :else `(inspect ~form)))
+
+(defmacro html [form]
+  (reader form))
 
 (comment
   (require '[clojure.walk :refer [macroexpand-all]])
