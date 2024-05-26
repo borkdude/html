@@ -1,6 +1,16 @@
 (ns borkdude.html
   (:require [clojure.string :as str]))
 
+(defn- escape-html
+  "From hiccup"
+  [text]
+  (.. ^String (str text)
+      (replace "&"  "&amp;")
+      (replace "<"  "&lt;")
+      (replace ">"  "&gt;")
+      (replace "\"" "&quot;")
+      (replace "'" "&apos;" #_(if (= *html-mode* :sgml) "&#39;" "&apos;"))))
+
 (defn inspect [x]
   (if (and (not (string? x))
            (sequential? x))
@@ -36,8 +46,8 @@
       `(str ~(format "<%s%s>" tag attrs)
             ~@(map #(list `html %) children)
             ~(format "</%s>" tag)))
-    (or (string? form)
-        (number? form)) form
+    (string? form) (escape-html form)
+    (number? form) form
     :else `(inspect ~form)))
 
 (comment

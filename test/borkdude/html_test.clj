@@ -17,6 +17,5 @@
     "<hr></hr>"
     [:hr]
 
-    #_#_
     "<div>&lt;script&gt;</div>"
     [:div "<script>"]))
