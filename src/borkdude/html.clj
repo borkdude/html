@@ -24,7 +24,7 @@
                  m)))
 
 (defmacro html [form]
-  (if (and (vector? form)
+  (cond (and (vector? form)
            (keyword? (first form)))
     (let [[tag ?attrs & children] form
           tag (name tag)
@@ -36,16 +36,20 @@
       `(str ~(format "<%s%s>" tag attrs)
             ~@(map #(list 'html %) children)
             ~(format "</%s>" tag)))
-    `(inspect ~form)))
+    (or (string? form)
+        (number? form)) form
+    :else `(inspect ~form)))
 
 (comment
+  (require '[clojure.walk :refer [macroexpand-all]])
   (def x
-    (let [name "Michiel"]
-      (html [:div {:color :blue :style {:color :blue}}
-             [:p "Hello there " name
-              ;; "</a>" ;; TODO, this string should be escaped
-              [:ul
-               [:li 1]
-               (map (fn [i]
-                      (html [:li i]))
-                    [2 3 4])]]]))))
+    (macroexpand-all
+     '(let [name "Michiel"]
+       (html [:div {:color :blue :style {:color :blue}}
+              [:p "Hello there " name
+               ;; "</a>" ;; TODO, this string should be escaped
+               [:ul
+                [:li 1]
+                (map (fn [i]
+                       (html [:li i]))
+                     [2 3 4])]]])))))
