@@ -43,7 +43,7 @@
     (let [y 1]
       (html [:div {:color :blue :style {:color :blue}}
              [:p "Hello there" y
-              "</a>" ;; TODO, this string should be escaped
+              ;; "</a>" ;; TODO, this string should be escaped
               [:ul
                [:li 1]
                (map (fn [i]
