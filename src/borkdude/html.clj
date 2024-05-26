@@ -40,9 +40,9 @@
 
 (comment
   (def x
-    (let [y 1]
+    (let [name "Michiel"]
       (html [:div {:color :blue :style {:color :blue}}
-             [:p "Hello there" y
+             [:p "Hello there " name
               ;; "</a>" ;; TODO, this string should be escaped
               [:ul
                [:li 1]
