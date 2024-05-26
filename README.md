@@ -7,7 +7,7 @@ Example:
 
 (let [name "Michiel"]
   (html [:div {:color :blue :style {:color :blue}}
-         [:p "Hello there" name
+         [:p "Hello there " name
           [:ul
            [:li 1]
            (map (fn [i]
