@@ -1,6 +1,6 @@
 # html
 
-Produce HTML from Clojure and ClojureScript.
+Produce HTML from hiccup in Clojure and ClojureScript.
 
 ## Rationale
 
