@@ -9,7 +9,7 @@ Produce HTML from Clojure and ClojureScript.
 built-in functionality. Some people wanted this functionality in JVM Clojure and
 ClojureScript as well. That is what this library offers.
 
-Benefits over other some but not all hiccup libraries may be:
+Benefits over some (but definitely not all hiccup) libraries may be:
 
 - Generation of HTML is done at compile time, if possible
 - The generated code is small and easy to understand
