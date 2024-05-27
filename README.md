@@ -9,7 +9,18 @@ Produce HTML from Clojure and ClojureScript.
 built-in functionality. Some people wanted this functionality in JVM Clojure and
 ClojureScript as well. That is what this library offers.
 
-Example:
+Benefits over other some but not all hiccup libraries may be:
+
+- Generation of HTML is done at compile time, if possible
+- The generated code is small and easy to understand
+- The library is small
+- The library works both in Clojure and ClojureScript
+
+Drawbacks of this library:
+
+- New and thus not as battle tested as other libraries
+
+## Examples
 
 ``` clojure
 (require '[borkdude.html :refer [html]])
@@ -30,7 +41,7 @@ Example:
 
 This library doesn't support dynamic creation of attributes in the same way that
 some hiccup libraries do. Rather, you have to use the special `:&` property to
-pass any dynamic properties:
+pass any dynamic properties, reminiscent of the JSX spread operator:
 
 ``` clojure
 (let [m {:style {:color :blue} :class "foo"}]
