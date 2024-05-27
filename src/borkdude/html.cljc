@@ -1,5 +1,6 @@
 (ns borkdude.html
-  (:require [clojure.string :as str]))
+  (:require [clojure.string :as str])
+  #?(:cljs (:require-macros [borkdude.html :refer [html]])))
 
 (defn- escape-html
   "From hiccup"
@@ -59,10 +60,10 @@
                       a))
                   "")]
       `(str ~@(if (string? attrs)
-                [(format "<%s%s>" tag attrs)]
+                [(str "<" tag attrs ">")]
                 ["<" tag " " attrs  ">"])
             ~@(map #(list `html %) children)
-            ~(format "</%s>" tag)))
+            ~(str "</" tag ">")))
     (string? form) (escape-html form)
     (number? form) form
     :else `(inspect ~form)))
