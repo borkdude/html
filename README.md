@@ -52,6 +52,22 @@ pass any dynamic properties, reminiscent of the JSX spread operator:
 Any static properties, like `:class "bar"` above function as a default which
 will be overridden by the dynamic map `m`.
 
+## Fragment
+
+A fragment can be written in a similar way as JSX with `:<>` as the tag:
+
+``` clojure
+(html [:div [:<> "Hello " "world"]]) ;;=> <div>Hello world</div>
+```
+
+## Unsafe
+
+Unsafe HTML (which won't be HTML-escaped) can be written with:
+
+``` clojure
+[:div {:unsafeInnerHTML "<do>your own thing</do>"}]
+```
+
 ## Data reader
 
 To install the `#html` reader, add the following to `data_readers.cljc`:
