@@ -65,7 +65,7 @@ A fragment can be written in a similar way as JSX with `:<>` as the tag:
 Unsafe HTML (which won't be HTML-escaped) can be written with:
 
 ``` clojure
-[:$ "<whatever>] ;;=> "<whatever>"
+(html [:$ "<whatever>]) ;;=> "<whatever>"
 ```
 
 This is especially handy for preventing double-escaping of already rendered HTML:
