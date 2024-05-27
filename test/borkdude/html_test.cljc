@@ -4,7 +4,7 @@
    [clojure.test :as t]))
 
 (defn child-component [{:keys [name]}]
-  (html [:div "Hello " name]))
+  (html [:<> "Hello " name]))
 
 (defn App []
   (html
@@ -51,7 +51,7 @@
     "<div>hello there</div>"
     (html [:div [:<> "hello " "there"]])
 
-    "<div><div color=\"blue\"></div><div>Hello Michiel</div></div>"
+    "<div><div color=\"blue\"></div>Hello Michiel</div>"
     (App)
     )
 
