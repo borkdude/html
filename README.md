@@ -65,7 +65,7 @@ A fragment can be written in a similar way as JSX with `:<>` as the tag:
 Unsafe HTML (which won't be HTML-escaped) can be written with:
 
 ``` clojure
-[:div {:unsafeInnerHTML "<do>your own thing</do>"}]
+[:div {:unsafeInnerHTML "<do>your own thing</do>"}] ;;=> "<do>your own thing</do>"
 ```
 
 ## Data reader
