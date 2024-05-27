@@ -3,6 +3,14 @@
    [borkdude.html :refer [html]]
    [clojure.test :as t]))
 
+(defn component1 []
+  (html [:div "Hello"]))
+
+(defn App []
+  (html (component1)))
+
+;; TODO: fix double encoding above
+
 (t/deftest ok
   (t/are [expected form]
       (= expected form)
