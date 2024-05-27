@@ -25,15 +25,21 @@
                    (str (name k) ": " (name v) ";"))
                  m)))
 
-(defn- ->attrs [m]
-  (str/join " "
-            (map (fn [[k v]]
-                   (str (name k)
-                        "=" (cond (string? v) (pr-str v)
-                                  (keyword? v) (pr-str (name v))
-                                  (map? v) (pr-str (->css v))
-                                  :else (str v))))
-                 m)))
+(defn ->attrs
+  ([m base-map]
+   (let [m (merge base-map m)]
+     (->attrs m)))
+  ([m]
+   (if (contains? m :&)
+     `(->attrs ~(get m :&) ~(dissoc m :&))
+     (str/join " "
+               (map (fn [[k v]]
+                      (str (name k)
+                           "=" (cond (string? v) (pr-str v)
+                                     (keyword? v) (pr-str (name v))
+                                     (map? v) (pr-str (->css v))
+                                     :else (str v))))
+                    m)))))
 
 (defn reader [form]
   (cond
@@ -44,9 +50,14 @@
           attrs? (map? ?attrs)
           children (if attrs? children (cons ?attrs children))
           attrs (if attrs?
-                  (str " " (->attrs ?attrs))
+                  (let [a (->attrs ?attrs)]
+                    (if (string? a)
+                      (str " " a)
+                      a))
                   "")]
-      `(str ~(format "<%s%s>" tag attrs)
+      `(str ~@(if (string? attrs)
+                [(format "<%s%s>" tag attrs)]
+                ["<" tag " " attrs  ">"])
             ~@(map #(list `html %) children)
             ~(format "</%s>" tag)))
     (string? form) (escape-html form)
@@ -56,16 +67,12 @@
 (defmacro html [form]
   (reader form))
 
+#_{:clj-kondo/ignore [:unused-referred-var
+                      :unused-namespace]}
 (comment
   (require '[clojure.walk :refer [macroexpand-all]])
-  (def x
-    (macroexpand-all
-     '(let [name "Michiel"]
-       (html [:div {:color :blue :style {:color :blue}}
-              [:p "Hello there " name
-               ;; "</a>" ;; TODO, this string should be escaped
-               [:ul
-                [:li 1]
-                (map (fn [i]
-                       (html [:li i]))
-                     [2 3 4])]]])))))
+  (let [m {:style {:color :blue}
+           :class "bar"}]
+    (html [:div {:class "foo"
+                 :& m}]))
+  )

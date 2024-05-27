@@ -27,4 +27,8 @@
     (let [x "<script>"]
       (html [:div x]))
 
-    ))
+    "<div class=\"bar\" style=\"color: blue;\"></div>"
+    (let [m {:style {:color :blue}
+             :class "bar"}]
+      (html [:div {:class "foo"
+                   :& m}]))))
