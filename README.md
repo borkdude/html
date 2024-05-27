@@ -18,7 +18,7 @@ Benefits over some (but definitely not all) hiccup libraries may be:
 
 Drawbacks of this library:
 
-- New and thus not as battle tested as other libraries
+- New and thus not as mature and battle tested as other libraries. Issues + PRs welcome though.
 
 ## Examples
 
