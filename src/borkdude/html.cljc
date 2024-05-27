@@ -77,7 +77,7 @@
                      ~(if omit-tag?
                         nil
                         (str "</" tag ">"))))))
-    (string? form) (->Html (escape-html form))
+    (string? form) `(->Html ~(escape-html form))
     (number? form) form
     :else `(->Html (->safe ~form))))
 
