@@ -26,20 +26,23 @@
                  m)))
 
 (defn ->attrs
+  ([m]
+   (str/join " "
+             (map (fn [[k v]]
+                    (str (name k)
+                         "=" (cond (string? v) (pr-str v)
+                                   (keyword? v) (pr-str (name v))
+                                   (map? v) (pr-str (->css v))
+                                   :else (str v))))
+                  m)))
   ([m base-map]
    (let [m (merge base-map m)]
-     (->attrs m)))
-  ([m]
-   (if (contains? m :&)
-     `(->attrs ~(get m :&) ~(dissoc m :&))
-     (str/join " "
-               (map (fn [[k v]]
-                      (str (name k)
-                           "=" (cond (string? v) (pr-str v)
-                                     (keyword? v) (pr-str (name v))
-                                     (map? v) (pr-str (->css v))
-                                     :else (str v))))
-                    m)))))
+     (->attrs m))))
+
+(defn- compile-attrs [m]
+  (if (contains? m :&)
+    `(->attrs ~(get m :&) ~(dissoc m :&))
+    (->attrs m)))
 
 (defn reader [form]
   (cond
@@ -50,7 +53,7 @@
           attrs? (map? ?attrs)
           children (if attrs? children (cons ?attrs children))
           attrs (if attrs?
-                  (let [a (->attrs ?attrs)]
+                  (let [a (compile-attrs ?attrs)]
                     (if (string? a)
                       (str " " a)
                       a))
