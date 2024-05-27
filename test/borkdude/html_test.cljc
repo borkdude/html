@@ -50,6 +50,8 @@
 
     "<div>hello there</div>"
     (html [:div [:<> "hello " "there"]])
+
+    (App "<div><div color=\"blue\"></div><div>Hello Michiel</div></div>")
     )
 
   )
