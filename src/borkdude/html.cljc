@@ -53,7 +53,7 @@
           tag (name tag)
           attrs? (map? ?attrs)
           children (if attrs? children (cons ?attrs children))
-          unsafe? (:__unsafeInnerHTML ?attrs)
+          unsafe? (:unsafeInnerHTML ?attrs)
           attrs (if attrs?
                   (let [a (compile-attrs ?attrs)]
                     (if (string? a)
@@ -82,7 +82,7 @@
            :class "bar"}]
     (html [:div {:class "foo"
                  :& m}]))
-  (html [:div {:__unsafeInnerHTML "<script>"}])
+  (html [:div {:unsafeInnerHTML "<script>"}])
   (let [x "<script>"] (html [:div {:__unsafeInnerHTML x}]))
-  (html [:div {:__unsafeInnerHTML (str "<script>" "</script>")}])
+  (html [:div {:unsafeInnerHTML (str "<script>" "</script>")}])
   )

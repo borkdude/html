@@ -37,7 +37,7 @@
     (html [:div {:class "<script>"}])
 
     "<script></script>"
-    (html [:div {:__unsafeInnerHTML (str "<script>" "</script>")}])
+    (html [:div {:unsafeInnerHTML (str "<script>" "</script>")}])
 
     )
 
