@@ -51,6 +51,7 @@
          (keyword? (first form)))
     (let [[tag ?attrs & children] form
           tag (name tag)
+          omit-tag? (= "<>" tag)
           attrs? (map? ?attrs)
           children (if attrs? children (cons ?attrs children))
           unsafe? (:unsafeInnerHTML ?attrs)
@@ -62,11 +63,15 @@
                   "")]
       (if unsafe?
         unsafe?
-        `(str ~@(if (string? attrs)
-                  [(str "<" tag attrs ">")]
-                  ["<" tag " " attrs  ">"])
+        `(str ~@(if omit-tag?
+                  nil
+                  (if (string? attrs)
+                      [(str "<" tag attrs ">")]
+                      ["<" tag " " attrs  ">"]))
               ~@(map #(list `html %) children)
-              ~(str "</" tag ">"))))
+              ~(if omit-tag?
+                 nil
+                 (str "</" tag ">")))))
     (string? form) (escape-html form)
     (number? form) form
     :else `(inspect ~form)))
@@ -85,4 +90,5 @@
   (html [:div {:unsafeInnerHTML "<script>"}])
   (let [x "<script>"] (html [:div {:__unsafeInnerHTML x}]))
   (html [:div {:unsafeInnerHTML (str "<script>" "</script>")}])
+  (html [:div [:<> "hello " "there"]])
   )

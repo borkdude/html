@@ -39,6 +39,8 @@
     "<script></script>"
     (html [:div {:unsafeInnerHTML (str "<script>" "</script>")}])
 
+    "<div>hello there</div>"
+    (html [:div [:<> "hello " "there"]])
     )
 
   )
