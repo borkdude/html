@@ -10,11 +10,11 @@
   (html
    [:div
     [:div {:color :blue}]
-    [:$ (child-component {:name "Michiel"})]]))
+    (child-component {:name "Michiel"})]))
 
 (t/deftest ok
   (t/are [expected form]
-      (= expected form)
+      (= expected (str form))
 
     "<div></div>"
     (html [:div])
@@ -56,6 +56,12 @@
 
     "<div>:&lt;script&gt;</div>"
     (html [:div [[:<script>]]])
+
+    "<ul><li>1</li><li>2</li><li>3</li></ul>"
+    (html [:ul [:li 1]
+           (map (fn [i]
+                  (html [:li i]))
+                [2 3])])
     )
 
   )

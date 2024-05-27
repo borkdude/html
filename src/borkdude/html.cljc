@@ -2,6 +2,10 @@
   (:require [clojure.string :as str])
   #?(:cljs (:require-macros [borkdude.html :refer [html]])))
 
+(deftype Html [s]
+  Object
+  (toString [_] s))
+
 (defn- escape-html
   "From hiccup"
   [text]
@@ -15,6 +19,7 @@
 
 (defn ->safe [x]
   (cond
+    (instance? Html x) (str x)
     (string? x) (escape-html x)
     (sequential? x) (str/join "" (map ->safe x))
     :else (escape-html x)))
@@ -62,19 +67,19 @@
                       a))
                   "")]
       (if unsafe?
-        (first children)
-        `(str ~@(if omit-tag?
-                  nil
-                  (if (string? attrs)
-                      [(str "<" tag attrs ">")]
-                      ["<" tag " " attrs  ">"]))
-              ~@(map #(list `html %) children)
-              ~(if omit-tag?
-                 nil
-                 (str "</" tag ">")))))
-    (string? form) (escape-html form)
+        `(->Html (str ~(first children)))
+        `(->Html (str ~@(if omit-tag?
+                         nil
+                         (if (string? attrs)
+                           [(str "<" tag attrs ">")]
+                           ["<" tag " " attrs  ">"]))
+                     ~@(map #(list `html %) children)
+                     ~(if omit-tag?
+                        nil
+                        (str "</" tag ">"))))))
+    (string? form) (->Html (escape-html form))
     (number? form) form
-    :else `(->safe ~form)))
+    :else `(->Html (->safe ~form))))
 
 (defmacro html [form]
   (reader form))

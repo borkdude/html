@@ -20,6 +20,10 @@ Drawbacks of this library:
 
 - New and thus not as mature and battle tested as other libraries. Issues + PRs welcome though.
 
+In this README, all example results are written as strings. In reality they are
+a `borkdude.html.Html` object which just contains a string. This is done to
+prevent issues with double-encoding.
+
 ## Examples
 
 ``` clojure
@@ -68,7 +72,7 @@ Unsafe HTML (which won't be HTML-escaped) can be written with:
 (html [:$ "<whatever>]) ;;=> "<whatever>"
 ```
 
-This is especially handy for preventing double-escaping of already rendered HTML:
+## Child components
 
 ``` clojure
 (defn child-component [{:keys [name]}]
@@ -78,7 +82,7 @@ This is especially handy for preventing double-escaping of already rendered HTML
   (html
    [:div
     [:div {:color :blue}]
-    [:$ (child-component {:name "Michiel"})]]))
+    (child-component {:name "Michiel"})]))
 
 (App) ;=> "<div><div color=\"blue\"></div><div>Hello Michiel</div></div>"
 ```
