@@ -54,7 +54,7 @@
           omit-tag? (= "<>" tag)
           attrs? (map? ?attrs)
           children (if attrs? children (cons ?attrs children))
-          unsafe? (:unsafeInnerHTML ?attrs)
+          unsafe? (= "$" tag)
           attrs (if attrs?
                   (let [a (compile-attrs ?attrs)]
                     (if (string? a)
@@ -62,7 +62,7 @@
                       a))
                   "")]
       (if unsafe?
-        unsafe?
+        (first children)
         `(str ~@(if omit-tag?
                   nil
                   (if (string? attrs)

@@ -3,13 +3,14 @@
    [borkdude.html :refer [html]]
    [clojure.test :as t]))
 
-(defn component1 []
-  (html [:div "Hello"]))
+(defn child-component [{:keys [name]}]
+  (html [:div "Hello " name]))
 
 (defn App []
-  (html (component1)))
-
-;; TODO: fix double encoding above
+  (html
+   [:div
+    [:div {:color :blue}]
+    [:$ (child-component {:name "Michiel"})]]))
 
 (t/deftest ok
   (t/are [expected form]
