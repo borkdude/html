@@ -45,6 +45,11 @@
     `(->attrs ~(get m :&) ~(dissoc m :&))
     (->attrs m)))
 
+(defmacro str* [& args]
+  (if (every? string? args)
+    (str/join args)
+    `(str ~@args)))
+
 (defn reader [form]
   (cond
     (and (vector? form)
@@ -59,10 +64,12 @@
                       (str " " a)
                       a))
                   "")]
-      `(str ~@(if (string? attrs)
+      `(str* ~@(if (string? attrs)
                 [(str "<" tag attrs ">")]
                 ["<" tag " " attrs  ">"])
-            ~@(map #(list `html %) children)
+             ~@(if (every? string? children)
+                 (map escape-html children)
+                 (map #(list `html %) children))
             ~(str "</" tag ">")))
     (string? form) (escape-html form)
     (number? form) form

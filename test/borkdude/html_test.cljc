@@ -32,3 +32,10 @@
              :class "bar"}]
       (html [:div {:class "foo"
                    :& m}]))))
+
+#?(:clj
+   (do
+     (require '[clojure.walk :refer [macroexpand-all]])
+     (t/deftest macroexpand-all-test
+       (t/is (= "<div a=1>Hello&lt;script&gt;</div>"
+                (macroexpand-all '(html [:div {:a 1} "Hello<script>"])))))))
