@@ -31,7 +31,7 @@
    (str/join " "
              (map (fn [[k v]]
                     (str (name k)
-                         "=" (cond (string? v) (pr-str v)
+                         "=" (cond (string? v) (pr-str (escape-html v))
                                    (keyword? v) (pr-str (name v))
                                    (map? v) (pr-str (->css v))
                                    :else (str v))))
@@ -53,17 +53,20 @@
           tag (name tag)
           attrs? (map? ?attrs)
           children (if attrs? children (cons ?attrs children))
+          unsafe? (:__unsafeInnerHTML ?attrs)
           attrs (if attrs?
                   (let [a (compile-attrs ?attrs)]
                     (if (string? a)
                       (str " " a)
                       a))
                   "")]
-      `(str ~@(if (string? attrs)
-                [(str "<" tag attrs ">")]
-                ["<" tag " " attrs  ">"])
-            ~@(map #(list `html %) children)
-            ~(str "</" tag ">")))
+      (if unsafe?
+        unsafe?
+        `(str ~@(if (string? attrs)
+                  [(str "<" tag attrs ">")]
+                  ["<" tag " " attrs  ">"])
+              ~@(map #(list `html %) children)
+              ~(str "</" tag ">"))))
     (string? form) (escape-html form)
     (number? form) form
     :else `(inspect ~form)))
@@ -79,4 +82,7 @@
            :class "bar"}]
     (html [:div {:class "foo"
                  :& m}]))
+  (html [:div {:__unsafeInnerHTML "<script>"}])
+  (let [x "<script>"] (html [:div {:__unsafeInnerHTML x}]))
+  (html [:div {:__unsafeInnerHTML (str "<script>" "</script>")}])
   )

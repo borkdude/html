@@ -31,4 +31,14 @@
     (let [m {:style {:color :blue}
              :class "bar"}]
       (html [:div {:class "foo"
-                   :& m}]))))
+                   :& m}]))
+
+    "<div class=\"&lt;script&gt;\"></div>"
+    (html [:div {:class "<script>"}])
+
+    "<script></script>"
+    (html [:div {:__unsafeInnerHTML (str "<script>" "</script>")}])
+
+    )
+
+  )
