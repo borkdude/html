@@ -1,8 +1,7 @@
 (ns borkdude.html-test
   (:require
    [borkdude.html :refer [html]]
-   [clojure.test :as t]
-   [hiccup2.core :as h]))
+   [clojure.test :as t]))
 
 (defn child-component [{:keys [name]}]
   (html [:<> "Hello " name]))
@@ -68,6 +67,7 @@
   )
 
 (comment
+  (require '[hiccup2.core :as h])
   (defn ul []
     (html [:ul [:li 1]
            (map (fn [i]
