@@ -103,7 +103,8 @@ To render a sequence of child elements, use `html` to render the child element a
 
 ## Performance
 
-Despite the relative simplicity of this library, performance is quite good. Here is an informal benchmark against `hiccup/hiccup`:
+Despite the relative simplicity of this library, performance is quite good. Here
+is an informal benchmark against `hiccup/hiccup`:
 
 ``` clojure
 (comment
@@ -122,6 +123,10 @@ Despite the relative simplicity of this library, performance is quite good. Here
   (time (dotimes [_ 10000000] (ul-hiccup))) ;; ~5500ms
   )
 ```
+
+Note that in `hiccup/hiccup`s case, when we wrap the `[:li i]` element within a
+call to `hiccup2.core/html` as well, performance becomes similar as `html` since
+it can do a similar compile-time optimization.
 
 ## Data reader
 

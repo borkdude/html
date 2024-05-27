@@ -78,7 +78,7 @@
   (defn ul-hiccup []
     (hiccup2.core/html [:ul [:li 1]
                         (map (fn [i]
-                               [:li i])
+                               (hiccup2.core/html [:li i]))
                              [2 3])]))
   (time (dotimes [_ 10000000] (ul-hiccup))) ;; ~5500ms
   )
