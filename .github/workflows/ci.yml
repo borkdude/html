@@ -12,3 +12,4 @@ jobs:
           cli: latest
       - run: |
           clojure -X:test
+          clojure -M:test:cljs-test-runner
