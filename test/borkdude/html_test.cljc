@@ -1,7 +1,8 @@
 (ns borkdude.html-test
   (:require
    [borkdude.html :refer [html]]
-   [clojure.test :as t]))
+   [clojure.test :as t]
+   [hiccup2.core :as h]))
 
 (defn child-component [{:keys [name]}]
   (html [:<> "Hello " name]))
@@ -64,4 +65,20 @@
                 [2 3])])
     )
 
+  )
+
+(comment
+  (defn ul []
+    (html [:ul [:li 1]
+           (map (fn [i]
+                  (html [:li i]))
+                [2 3])]))
+  (time (dotimes [_ 10000000] (ul))) ;; ~3600ms
+
+  (defn ul-hiccup []
+    (hiccup2.core/html [:ul [:li 1]
+                        (map (fn [i]
+                               [:li i])
+                             [2 3])]))
+  (time (dotimes [_ 10000000] (ul-hiccup))) ;; ~5500ms
   )

@@ -101,6 +101,28 @@ To render a sequence of child elements, use `html` to render the child element a
 ;;=> "<ul><li>1</li><li>2</li><li>3</li></ul>"
 ```
 
+## Performance
+
+Despite the relative simplicity of this library, performance is quite good. Here is an informal benchmark against `hiccup/hiccup`:
+
+``` clojure
+(comment
+  (defn ul []
+    (html [:ul [:li 1]
+           (map (fn [i]
+                  (html [:li i]))
+                [2 3])]))
+  (time (dotimes [_ 10000000] (ul))) ;; ~3600ms
+
+  (defn ul-hiccup []
+    (hiccup2.core/html [:ul [:li 1]
+                        (map (fn [i]
+                               [:li i])
+                             [2 3])]))
+  (time (dotimes [_ 10000000] (ul-hiccup))) ;; ~5500ms
+  )
+```
+
 ## Data reader
 
 To install the `#html` reader, add the following to `data_readers.cljc`:

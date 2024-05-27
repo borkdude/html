@@ -2,7 +2,8 @@
  {:test ;; added by neil
   {:extra-paths ["test"]
    :extra-deps {io.github.cognitect-labs/test-runner
-                 {:git/tag "v0.5.0" :git/sha "b3fd0d2"}}
+                {:git/tag "v0.5.0" :git/sha "b3fd0d2"}
+                hiccup/hiccup {:mvn/version "2.0.0-RC3"}}
    :main-opts ["-m" "cognitect.test-runner"]
    :exec-fn cognitect.test-runner.api/test}
   :cljs-test-runner
