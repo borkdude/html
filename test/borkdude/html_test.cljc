@@ -46,12 +46,13 @@
     (html [:div {:class "<script>"}])
 
     "<script></script>"
-    (html [:div {:unsafeInnerHTML (str "<script>" "</script>")}])
+    (html [:$ (str "<script>" "</script>")])
 
     "<div>hello there</div>"
     (html [:div [:<> "hello " "there"]])
 
-    (App "<div><div color=\"blue\"></div><div>Hello Michiel</div></div>")
+    "<div><div color=\"blue\"></div><div>Hello Michiel</div></div>"
+    (App)
     )
 
   )
