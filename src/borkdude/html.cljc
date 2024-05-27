@@ -13,12 +13,11 @@
        (replace "\"" "&quot;")
        (replace "'" "&apos;" #_(if (= *html-mode* :sgml) "&#39;" "&apos;")))))
 
-(defn inspect [x]
+(defn ->safe [x]
   (cond
     (string? x) (escape-html x)
-    (sequential? x)
-    (str/join "" x)
-    :else x))
+    (sequential? x) (str/join "" (map ->safe x))
+    :else (escape-html x)))
 
 (defn- ->css [m]
   (str/join "\n"
@@ -47,6 +46,7 @@
 
 (defn reader [form]
   (cond
+    (nil? form) nil
     (and (vector? form)
          (keyword? (first form)))
     (let [[tag ?attrs & children] form
@@ -74,7 +74,7 @@
                  (str "</" tag ">")))))
     (string? form) (escape-html form)
     (number? form) form
-    :else `(inspect ~form)))
+    :else `(->safe ~form)))
 
 (defmacro html [form]
   (reader form))
@@ -89,6 +89,10 @@
                  :& m}]))
   (html [:div {:unsafeInnerHTML "<script>"}])
   (let [x "<script>"] (html [:div {:__unsafeInnerHTML x}]))
-  (html [:div {:unsafeInnerHTML (str "<script>" "</script>")}])
+  (html [:$ (str "<script>" "</script>")])
   (html [:div [:<> "hello " "there"]])
+  (html [:div [[:<>script]]])
+  (html [:div [:$ [:<>script]]])
+  (macroexpand-all '(html [:div ]))
+  (macroexpand-all '(html [:div "Hello"]))
   )

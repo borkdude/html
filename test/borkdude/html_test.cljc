@@ -53,6 +53,9 @@
 
     "<div><div color=\"blue\"></div>Hello Michiel</div>"
     (App)
+
+    "<div>:&lt;script&gt;</div>"
+    (html [:div [[:<script>]]])
     )
 
   )
