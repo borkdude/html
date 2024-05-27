@@ -74,6 +74,8 @@ Unsafe HTML (which won't be HTML-escaped) can be written with:
 
 ## Child components
 
+Just use function calls for child components:
+
 ``` clojure
 (defn child-component [{:keys [name]}]
   (html [:div "Hello " name]))
@@ -85,6 +87,18 @@ Unsafe HTML (which won't be HTML-escaped) can be written with:
     (child-component {:name "Michiel"})]))
 
 (App) ;=> "<div><div color=\"blue\"></div><div>Hello Michiel</div></div>"
+```
+
+## Child seqs
+
+To render a sequence of child elements, use `html` to render the child element as well:
+
+``` clojure
+(html
+  [:ul
+    [:li 1]
+    (map (fn [i] (html [:li i])) [2 3])])
+;;=> "<ul><li>1</li><li>2</li><li>3</li></ul>"
 ```
 
 ## Data reader
