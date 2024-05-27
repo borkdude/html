@@ -4,4 +4,9 @@
    :extra-deps {io.github.cognitect-labs/test-runner
                  {:git/tag "v0.5.0" :git/sha "b3fd0d2"}}
    :main-opts ["-m" "cognitect.test-runner"]
-   :exec-fn cognitect.test-runner.api/test}}}
+   :exec-fn cognitect.test-runner.api/test}
+  :cljs-test-runner
+  {:extra-deps {olical/cljs-test-runner {:mvn/version "3.7.0"}
+                org.clojure/clojurescript {:mvn/version "1.11.132"}}
+   :extra-paths ["test" "cljs-test-runner-out/gen"]
+   :main-opts ["-m" "cljs-test-runner.main" "-d" "test"]}}}
