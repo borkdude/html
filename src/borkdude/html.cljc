@@ -84,9 +84,7 @@
                          (if (string? attrs)
                            [(str "<" tag attrs ">")]
                            ["<" tag " " attrs  ">"]))
-                       ~@(map #(if (string? %)
-                                 %
-                                 (list `html %)) children)
+                      ~@(map #(list `html %) children)
                      ~(if omit-tag?
                         nil
                         (str "</" tag ">"))))))
