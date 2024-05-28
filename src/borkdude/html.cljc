@@ -1,6 +1,6 @@
 (ns borkdude.html
   (:require [clojure.string :as str])
-  #?(:cljs (:require-macros [borkdude.html :refer [html]])))
+  #?(:cljs (:require-macros [borkdude.html :refer [html #_str*]])))
 
 (deftype Html [s]
   Object
@@ -49,6 +49,17 @@
     `(->attrs ~(get m :&) ~(dissoc m :&))
     (->attrs m)))
 
+#_(defmacro str* [& xs]
+  (loop [acc ""
+         xs (seq xs)]
+    (if xs
+      (let [x (first xs)
+            xs (next xs)]
+        (if (string? x)
+          (recur (str acc x) xs)
+          `(str ~acc ~x (str* ~@xs))))
+      acc)))
+
 (defn reader [form]
   (cond
     (nil? form) nil
@@ -73,7 +84,9 @@
                          (if (string? attrs)
                            [(str "<" tag attrs ">")]
                            ["<" tag " " attrs  ">"]))
-                     ~@(map #(list `html %) children)
+                       ~@(map #(if (string? %)
+                                 %
+                                 (list `html %)) children)
                      ~(if omit-tag?
                         nil
                         (str "</" tag ">"))))))

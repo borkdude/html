@@ -68,11 +68,16 @@
 
 (comment
   (require '[hiccup2.core :as h])
+  (require '[clojure.walk :refer [macroexpand-all]])
   (defn ul []
     (html [:ul [:li 1]
            (map (fn [i]
                   (html [:li i]))
                 [2 3])]))
+  (macroexpand-all '(html [:ul [:li 1]
+                           (map (fn [i]
+                                  (html [:li i]))
+                                [2 3])]))
   (time (dotimes [_ 10000000] (ul))) ;; ~3600ms
 
   (defn ul-hiccup []
