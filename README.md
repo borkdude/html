@@ -13,7 +13,7 @@ Benefits over some (but definitely not all) hiccup libraries may be:
 
 - Generation of HTML is done at compile time, hiccup vectors are never inspected at runtime
 - The generated code is small and easy to understand
-- The library itself is small
+- The library itself is small (currently around 100 lines of code)
 - The library works both in Clojure and ClojureScript
 
 Drawbacks of this library:
