@@ -60,12 +60,6 @@
           `(str ~acc ~x (str* ~@xs))))
       acc)))
 
-(def ^{:doc "A list of elements that must be rendered without a closing tag. From hiccup."
-       :private true}
-  void-tags
-  #{"area" "base" "br" "col" "command" "embed" "hr" "img" "input" "keygen" "link"
-    "meta" "param" "source" "track" "wbr"})
-
 (defn reader [form]
   (cond
     (nil? form) nil
@@ -91,8 +85,7 @@
                            [(str "<" tag attrs ">")]
                            ["<" tag " " attrs  ">"]))
                       ~@(map #(list `html %) children)
-                      ~(if (or omit-tag?
-                               (contains? void-tags tag))
+                     ~(if omit-tag?
                         nil
                         (str "</" tag ">"))))))
     (string? form) `(->Html ~(escape-html form))
