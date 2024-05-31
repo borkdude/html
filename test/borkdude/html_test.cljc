@@ -61,10 +61,10 @@
 
     "<div><br></div>"
     (html [:div [:br]]))
-
-  )
+)
 
 (comment
+  (ok)
   (require '[hiccup2.core :as h])
   (require '[clojure.walk :refer [macroexpand-all]])
   (defn ul []

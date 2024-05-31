@@ -19,6 +19,7 @@ Benefits over some (but definitely not all) hiccup libraries may be:
 Drawbacks of this library:
 
 - New and thus not as mature and battle tested as other libraries. Issues + PRs welcome though.
+- This library only outputs HTML5. If you want to output XML, use a different library.
 
 In this README, all example results are written as strings. In reality they are
 a `borkdude.html.Html` object which just contains a string. This is done to
@@ -148,19 +149,18 @@ Note that this data reader isn't enabled by default since it's not recommended
 to use unqualified data readers for libraries since this can be a source of
 conflicts.
 
-## HTML versions
+## Complete document
 
-By default, this library outputs XHTML. So `[:br]` compiles to `<br></br>`.
-Here is an example of how to to output a valid XHTML 1.1 document:
+This library only outputs HTML5. So `[:br]` compiles to `<br>` without a closing tag.
+Here is an example of how to to output a complete HTML5 document:
 
 ``` clojure
 (html
  [:<>
-  [:$ "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\" \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">"]
-  [:html {:xmlns "http://www.w3.org/1999/xhtml" :lang "en"}
+  [:$ "<!DOCTYPE html>"]
+  [:html {:lang "en"}
    [:head
-    [:meta {:http-equiv "Content-Type"
-            :content "text/html; charset=utf-8"}]
+    [:meta {:charset "utf-8"}]
     [:title "Hi"]]
    [:body
     [:div "ok"]
