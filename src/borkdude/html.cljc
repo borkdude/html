@@ -1,6 +1,6 @@
 (ns borkdude.html
   (:require [clojure.string :as str])
-  #?(:cljs (:require-macros [borkdude.html :refer [html #_str*]])))
+  #?(:cljs (:require-macros [borkdude.html :refer [html]])))
 
 (deftype Html [s]
   Object
@@ -50,15 +50,21 @@
     (->attrs m)))
 
 #_(defmacro str* [& xs]
-  (loop [acc ""
-         xs (seq xs)]
-    (if xs
-      (let [x (first xs)
-            xs (next xs)]
-        (if (string? x)
-          (recur (str acc x) xs)
-          `(str ~acc ~x (str* ~@xs))))
-      acc)))
+    (loop [acc ""
+           xs (seq xs)]
+      (if xs
+        (let [x (first xs)
+              xs (next xs)]
+          (if (string? x)
+            (recur (str acc x) xs)
+            `(str ~acc ~x (str* ~@xs))))
+        acc)))
+
+(def ^{:doc "A list of elements that must be rendered without a closing tag. From hiccup."
+       :private true}
+  void-tags
+  #{"area" "base" "br" "col" "command" "embed" "hr" "img" "input" "keygen" "link"
+    "meta" "param" "source" "track" "wbr"})
 
 (defn reader [form]
   (cond
@@ -80,14 +86,15 @@
       (if unsafe?
         `(->Html (str ~(first children)))
         `(->Html (str ~@(if omit-tag?
-                         nil
-                         (if (string? attrs)
-                           [(str "<" tag attrs ">")]
-                           ["<" tag " " attrs  ">"]))
+                          nil
+                          (if (string? attrs)
+                            [(str "<" tag attrs ">")]
+                            ["<" tag " " attrs  ">"]))
                       ~@(map #(list `html %) children)
-                     ~(if omit-tag?
-                        nil
-                        (str "</" tag ">"))))))
+                      ~(if (or omit-tag?
+                               (contains? void-tags tag))
+                         nil
+                         (str "</" tag ">"))))))
     (string? form) `(->Html ~(escape-html form))
     (number? form) form
     :else `(->Html (->safe ~form))))

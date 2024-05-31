@@ -25,10 +25,6 @@
     "<a href=\"#\">Hi</a>"
     (html [:a {:href "#"} "Hi"])
 
-    ;; XHTML5?
-    "<hr></hr>"
-    (html [:hr])
-
     "<div>&lt;script&gt;</div>"
     (html [:div "<script>"])
 
@@ -62,11 +58,13 @@
            (map (fn [i]
                   (html [:li i]))
                 [2 3])])
-    )
 
-  )
+    "<div><br></div>"
+    (html [:div [:br]]))
+)
 
 (comment
+  (ok)
   (require '[hiccup2.core :as h])
   (require '[clojure.walk :refer [macroexpand-all]])
   (defn ul []
