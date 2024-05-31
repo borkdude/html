@@ -1,3 +1,5 @@
 .nrepl-port
 .cpcache
 cljs-test-runner-out
+test/scratch.clj
+test/borkdude/scratch.clj

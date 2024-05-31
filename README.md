@@ -147,3 +147,24 @@ like you can in squint.
 Note that this data reader isn't enabled by default since it's not recommended
 to use unqualified data readers for libraries since this can be a source of
 conflicts.
+
+## HTML versions
+
+By default, this library outputs XHTML. So `[:br]` compiles to `<br></br>`.
+Here is an example of how to to output a valid XHTML 1.1 document:
+
+``` clojure
+(html
+ [:<>
+  [:$ "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\" \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">"]
+  [:html {:xmlns "http://www.w3.org/1999/xhtml" :lang "en"}
+   [:head
+    [:meta {:http-equiv "Content-Type"
+            :content "text/html; charset=utf-8"}]
+    [:title "Hi"]]
+   [:body
+    [:div "ok"]
+    [:p
+     "yes"
+     [:br]]]]])
+```
