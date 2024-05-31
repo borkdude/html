@@ -18,8 +18,9 @@ Benefits over some (but definitely not all) hiccup libraries may be:
 
 Drawbacks of this library:
 
-- New and thus not as mature and battle tested as other libraries. Issues + PRs welcome though.
-- This library only outputs HTML5. If you want to output XML, use a different library.
+- Less dynamic compared to other hiccup libraries (this can also seen as a benefit when it comes to security and performance)
+- New and thus not as mature and battle tested as other libraries. Issues + PRs welcome though
+- This library only outputs HTML5. If you want to output XML, use a different library
 
 In this README, all example results are written as strings. In reality they are
 a `borkdude.html.Html` object which just contains a string. This is done to
