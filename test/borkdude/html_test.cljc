@@ -22,6 +22,9 @@
     "<div></div>"
     #html [:div]
 
+    "<div></div>"
+    #xml [:div]
+
     "<a href=\"#\">Hi</a>"
     (html [:a {:href "#"} "Hi"])
 
