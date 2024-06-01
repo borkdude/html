@@ -2,6 +2,8 @@
 
 Produce HTML from hiccup in Clojure and ClojureScript.
 
+[![Clojars Project](https://img.shields.io/clojars/v/io.github.borkdude/html.svg)](https://clojars.org/io.github.borkdude/html)
+
 ## Rationale
 
 [Squint](https://github.com/squint-cljs/squint) and
