@@ -130,7 +130,7 @@ Note that in `hiccup/hiccup`s case, when we wrap the `[:li i]` element within a
 call to `hiccup2.core/html` as well, performance becomes similar as `html` since
 it can do a similar compile-time optimization.
 
-## Data reader
+## Data readers
 
 To install the `#html` reader and/or `#xml` reader, add the following to `data_readers.cljc`:
 
