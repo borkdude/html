@@ -91,7 +91,9 @@
                             (if (string? attrs)
                               [(str "<" tag attrs ">")]
                               ["<" tag " " attrs  ">"]))
-                        ~@(map #(list `html %) children)
+                        ~@(map #(list (if xml?
+                                        `xml
+                                        `html) %) children)
                         ~(if (or omit-tag?
                                  (and (contains? void-tags tag)
                                       (not xml?)))

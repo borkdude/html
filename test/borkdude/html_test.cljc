@@ -1,6 +1,6 @@
 (ns borkdude.html-test
   (:require
-   [borkdude.html :refer [html]]
+   [borkdude.html :refer [html xml]]
    [clojure.test :as t]))
 
 (defn child-component [{:keys [name]}]
@@ -60,7 +60,10 @@
                 [2 3])])
 
     "<div><br></div>"
-    (html [:div [:br]]))
+    (html [:div [:br]])
+
+    "<div><br></br></div>"
+    (xml [:div [:br]]))
 )
 
 (comment
