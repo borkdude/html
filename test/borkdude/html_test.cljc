@@ -84,4 +84,5 @@
                                (hiccup2.core/html [:li i]))
                              [2 3])]))
   (time (dotimes [_ 10000000] (ul-hiccup))) ;; ~5500ms
+  (macroexpand-all '(html [:a {:href "dude"}]))
   )

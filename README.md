@@ -20,7 +20,7 @@ Drawbacks of this library:
 
 - Less dynamic compared to other hiccup libraries (this can also seen as a benefit when it comes to security and performance)
 - New and thus not as mature and battle tested as other libraries. Issues + PRs welcome though
-- This library only outputs HTML5. If you want to output XML, use a different library
+- This library only outputs HTML5 when using the `html` macro. If you want to output XML, use the `xml` macro.
 
 In this README, all example results are written as strings. In reality they are
 a `borkdude.html.Html` object which just contains a string. This is done to
@@ -132,25 +132,25 @@ it can do a similar compile-time optimization.
 
 ## Data reader
 
-To install the `#html` reader, add the following to `data_readers.cljc`:
+To install the `#html` reader and/or `#xml` reader, add the following to `data_readers.cljc`:
 
 ``` clojure
-{html borkdude.html/reader}
+{html borkdude.html/html-reader
+ xml  borkdude.html/xml-reader}
 ```
 
 Then you can write:
 
 ``` clojure
 #html [:div "Hello"]
+#xml [:note {:id "1"}]
 ```
 
-like you can in squint.
-
-Note that this data reader isn't enabled by default since it's not recommended
+Note that these data readers aren't enabled by default since it's not recommended
 to use unqualified data readers for libraries since this can be a source of
 conflicts.
 
-## Complete document
+## Complete HTML5 document
 
 This library only outputs HTML5. So `[:br]` compiles to `<br>` without a closing tag.
 Here is an example of how to to output a complete HTML5 document:
@@ -169,3 +169,7 @@ Here is an example of how to to output a complete HTML5 document:
      "yes"
      [:br]]]]])
 ```
+
+## License
+
+MIT, see `LICENSE`

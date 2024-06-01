@@ -66,41 +66,52 @@
   #{"area" "base" "br" "col" "command" "embed" "hr" "img" "input" "keygen" "link"
     "meta" "param" "source" "track" "wbr"})
 
-(defn reader [form]
-  (cond
-    (nil? form) nil
-    (and (vector? form)
-         (keyword? (first form)))
-    (let [[tag ?attrs & children] form
-          tag (name tag)
-          omit-tag? (= "<>" tag)
-          attrs? (map? ?attrs)
-          children (if attrs? children (cons ?attrs children))
-          unsafe? (= "$" tag)
-          attrs (if attrs?
-                  (let [a (compile-attrs ?attrs)]
-                    (if (string? a)
-                      (str " " a)
-                      a))
-                  "")]
-      (if unsafe?
-        `(->Html (str ~(first children)))
-        `(->Html (str ~@(if omit-tag?
-                          nil
-                          (if (string? attrs)
-                            [(str "<" tag attrs ">")]
-                            ["<" tag " " attrs  ">"]))
-                      ~@(map #(list `html %) children)
-                      ~(if (or omit-tag?
-                               (contains? void-tags tag))
-                         nil
-                         (str "</" tag ">"))))))
-    (string? form) `(->Html ~(escape-html form))
-    (number? form) form
-    :else `(->Html (->safe ~form))))
+(defn- ->html [opts form]
+  (let [xml? (= :xml (:mode opts))]
+    (cond
+      (nil? form) nil
+      (and (vector? form)
+           (keyword? (first form)))
+      (let [[tag ?attrs & children] form
+            tag (name tag)
+            omit-tag? (= "<>" tag)
+            attrs? (map? ?attrs)
+            children (if attrs? children (cons ?attrs children))
+            unsafe? (= "$" tag)
+            attrs (if attrs?
+                    (let [a (compile-attrs ?attrs)]
+                      (if (string? a)
+                        (str " " a)
+                        a))
+                    "")]
+        (if unsafe?
+          `(->Html (str ~(first children)))
+          `(->Html (str ~@(if omit-tag?
+                            nil
+                            (if (string? attrs)
+                              [(str "<" tag attrs ">")]
+                              ["<" tag " " attrs  ">"]))
+                        ~@(map #(list `html %) children)
+                        ~(if (or omit-tag?
+                                 (and (contains? void-tags tag)
+                                      (not xml?)))
+                           nil
+                           (str "</" tag ">"))))))
+      (string? form) `(->Html ~(escape-html form))
+      (number? form) form
+      :else `(->Html (->safe ~form)))))
+
+(defn html-reader [form]
+  (->html nil form))
 
 (defmacro html [form]
-  (reader form))
+  (->html nil form))
+
+(defmacro xml [form]
+  (->html {:mode :xml} form))
+
+(defn xml-reader [form]
+  (->html {:mode :xml} form))
 
 #_{:clj-kondo/ignore [:unused-referred-var
                       :unused-namespace]}
@@ -118,4 +129,6 @@
   (html [:div [:$ [:<>script]]])
   (macroexpand-all '(html [:div ]))
   (macroexpand-all '(html [:div "Hello"]))
+  (html [:br])
+  (xml [:br])
   )
