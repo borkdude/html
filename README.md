@@ -152,8 +152,9 @@ conflicts.
 
 ## Complete HTML5 document
 
-This library only outputs HTML5. So `[:br]` compiles to `<br>` without a closing tag.
-Here is an example of how to to output a complete HTML5 document:
+When using `html`, this library outputs HTML5. So `[:br]` compiles to `<br>`
+without a closing tag. Here is an example of how to to output a complete HTML5
+document:
 
 ``` clojure
 (html
