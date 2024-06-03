@@ -17,7 +17,9 @@
        (replace "\"" "&quot;")
        (replace "'" "&apos;" #_(if (= *html-mode* :sgml) "&#39;" "&apos;")))))
 
-(defn ->safe [x]
+(defn ->safe
+  "Implementation, do not use"
+  [x]
   (cond
     (instance? Html x) (str x)
     (string? x) (escape-html x)
@@ -31,23 +33,27 @@
                  m)))
 
 (defn ->attrs
-  ([m]
-   (str/join " "
-             (map (fn [[k v]]
-                    (str (name k)
-                         "=" (cond (string? v) (pr-str (escape-html v))
-                                   (keyword? v) (pr-str (name v))
-                                   (map? v) (pr-str (->css v))
-                                   :else (str v))))
-                  m)))
-  ([m base-map]
+  "Implementation, do not use"
+  ([opts m]
+   (let [xml? (= :xml (:mode opts))]
+     (str/join " "
+               (map (fn [[k v]]
+                      (if (and (true? v) (not xml?))
+                        (name k)
+                        (str (name k)
+                             "=" (cond (string? v) (pr-str (escape-html v))
+                                       (keyword? v) (pr-str (name v))
+                                       (map? v) (pr-str (->css v))
+                                       :else (pr-str (str v))))))
+                    m))))
+  ([opts m base-map]
    (let [m (merge base-map m)]
-     (->attrs m))))
+     (->attrs opts m))))
 
-(defn- compile-attrs [m]
+(defn- compile-attrs [opts m]
   (if (contains? m :&)
-    `(->attrs ~(get m :&) ~(dissoc m :&))
-    (->attrs m)))
+    `(->attrs ~opts ~(get m :&) ~(dissoc m :&))
+    (->attrs opts m)))
 
 #_(defmacro str* [& xs]
     (loop [acc ""
@@ -79,7 +85,7 @@
             children (if attrs? children (cons ?attrs children))
             unsafe? (= "$" tag)
             attrs (if attrs?
-                    (let [a (compile-attrs ?attrs)]
+                    (let [a (compile-attrs opts ?attrs)]
                       (if (string? a)
                         (str " " a)
                         a))

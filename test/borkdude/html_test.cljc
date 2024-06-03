@@ -66,8 +66,16 @@
     (html [:div [:br]])
 
     "<div><br></br></div>"
-    (xml [:div [:br]]))
-)
+    (xml [:div [:br]])
+
+    "<input checked>"
+    (html [:input {:checked true}])
+
+    "<input checked=\"true\"></input>"
+    (xml [:input {:checked true}])
+
+    )
+  )
 
 (comment
   (ok)
