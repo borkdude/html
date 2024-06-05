@@ -1,6 +1,6 @@
 {:aliases
  {:neil {:project {:name io.github.borkdude/html
-                   :version "0.1.0"}}
+                   :version "0.1.1"}}
   :test ;; added by neil
   {:extra-paths ["test"]
    :extra-deps {io.github.cognitect-labs/test-runner
