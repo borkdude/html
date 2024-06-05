@@ -2,7 +2,7 @@
 
 Unreleased changes are available via `io.github.borkdude/html {:git/sha "..."}` in `deps.edn`.
 
-[html](https://github.com/borkdude/htm): Produce HTML from hiccup in Clojure and ClojureScript
+[html](https://github.com/borkdude/html): Produce HTML from hiccup in Clojure and ClojureScript
 
 ## 0.1.1
 
