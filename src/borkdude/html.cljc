@@ -51,7 +51,8 @@
      (->attrs opts m))))
 
 (defn- compile-attrs [opts m]
-  (if (contains? m :&)
+  (if (or (contains? m :&)
+          (some #(-> % second seq?) m)) 
     `(->attrs ~opts ~(get m :&) ~(dissoc m :&))
     (->attrs opts m)))
 
