@@ -74,7 +74,8 @@
     "<input checked=\"true\"></input>"
     (xml [:input {:checked true}])
 
-    )
+    "<a href=\"http://dude\"></a>"
+    (html [:a {:href (str "http://" "dude")}]))
   )
 
 (comment

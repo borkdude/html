@@ -50,8 +50,12 @@
    (let [m (merge base-map m)]
      (->attrs opts m))))
 
+(defn constant? [v]
+  (not (seq? v)))
+
 (defn- compile-attrs [opts m]
-  (if (contains? m :&)
+  (if (or (contains? m :&)
+          (not (every? constant? (vals m))))
     `(->attrs ~opts ~(get m :&) ~(dissoc m :&))
     (->attrs opts m)))
 
