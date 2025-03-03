@@ -77,6 +77,9 @@
     "<a href=\"http://dude\"></a>"
     (html [:a {:href (str "http://" "dude")}])
 
+    "<div class=\"container\"></div>"
+    (html [:div.container])
+
     "<a class=\"bar baz quux\" id=\"foo\"></a>"
     (html [:a#foo.bar.baz {:class "quux"}]))
   )

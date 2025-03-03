@@ -123,7 +123,7 @@
                      short-attrs)
             omit-tag? (= "<>" tag)
             unsafe? (= "$" tag)
-            attrs (if attrs?
+            attrs (if ?attrs
                     (let [a (compile-attrs opts ?attrs)]
                       (if (string? a)
                         (str " " a)
