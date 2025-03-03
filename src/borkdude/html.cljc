@@ -76,6 +76,33 @@
   #{"area" "base" "br" "col" "command" "embed" "hr" "img" "input" "keygen" "link"
     "meta" "param" "source" "track" "wbr"})
 
+(defn- parse-tag
+  "From hiccup, thanks @weavejester"
+  [^String tag]
+  (let [id-index    (let [index (.indexOf tag "#")] (when (pos? index) index))
+        class-index (let [index (.indexOf tag ".")] (when (pos? index) index))]
+    [(cond
+       id-index    (.substring tag 0 id-index)
+       class-index (.substring tag 0 class-index)
+       :else tag)
+     (when id-index
+       (if class-index
+         (.substring tag (unchecked-inc-int id-index) class-index)
+         (.substring tag (unchecked-inc-int id-index))))
+     (when class-index
+       (.substring tag (unchecked-inc-int class-index)))]))
+
+(defn merge-attrs [attrs short-attrs]
+  (let [attrs (if-let [c (:class attrs)]
+                       (if-let [sc (:class short-attrs)]
+                         (assoc attrs :class (str sc " " c))
+                         attrs)
+                       attrs)
+        attrs (if-let [id (:id short-attrs (:id attrs))]
+                  (assoc attrs :id id)
+                  attrs)]
+    attrs))
+
 (defn- ->html [opts form]
   (let [xml? (= :xml (:mode opts))]
     (cond
@@ -84,9 +111,17 @@
            (keyword? (first form)))
       (let [[tag ?attrs & children] form
             tag (name tag)
-            omit-tag? (= "<>" tag)
+            [tag id class] (parse-tag tag)
+            classes (when class (str/replace class "." " "))
+            short-attrs (cond-> nil
+                          classes (assoc :class classes)
+                          id (assoc :id id))
             attrs? (map? ?attrs)
             children (if attrs? children (cons ?attrs children))
+            ?attrs (if attrs?
+                     (merge-attrs ?attrs short-attrs)
+                     short-attrs)
+            omit-tag? (= "<>" tag)
             unsafe? (= "$" tag)
             attrs (if attrs?
                     (let [a (compile-attrs opts ?attrs)]
