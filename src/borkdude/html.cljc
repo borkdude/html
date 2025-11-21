@@ -6,7 +6,7 @@
   Object
   (toString [_] s))
 
-(defn- escape-html
+(defn escape-html
   "From hiccup"
   [text]
   (->
