@@ -1,6 +1,6 @@
 (ns borkdude.html-test
   (:require
-   [borkdude.html :refer [html xml]]
+   [borkdude.html :refer [escape-html html xml]]
    [clojure.test :as t]))
 
 (defn child-component [{:keys [name]}]
@@ -83,6 +83,14 @@
     "<a class=\"bar baz quux\" id=\"foo\"></a>"
     (html [:a#foo.bar.baz {:class "quux"}]))
   )
+
+(t/deftest test-escaped-chars
+  (t/is (= (escape-html "\"") "&quot;"))
+  (t/is (= (escape-html "<") "&lt;"))
+  (t/is (= (escape-html ">") "&gt;"))
+  (t/is (= (escape-html "&") "&amp;"))
+  (t/is (= (escape-html "foo") "foo"))
+  (t/is (= (escape-html "'") "&apos;")))
 
 (comment
   (ok)
