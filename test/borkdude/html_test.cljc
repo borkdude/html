@@ -77,12 +77,39 @@
     "<a href=\"http://dude\"></a>"
     (html [:a {:href (str "http://" "dude")}])
 
+    ;; a symbol attribute value renders its runtime value, not its name
+    "<div data-id=\"main\"></div>"
+    (let [x "main"]
+      (html [:div {:data-id x}]))
+
+    ;; a symbol nested inside a literal attribute collection also renders its
+    ;; runtime value (a case that `(str ...)` around the symbol cannot fix)
+    "<div style=\"color: red;\"></div>"
+    (let [c "red"]
+      (html [:div {:style {:color c}}]))
+
     "<div class=\"container\"></div>"
     (html [:div.container])
 
     "<a class=\"bar baz quux\" id=\"foo\"></a>"
     (html [:a#foo.bar.baz {:class "quux"}]))
   )
+
+(t/deftest symbol-attribute-values
+  ;; A bound symbol used as an attribute value must evaluate to its runtime
+  ;; value. Previously `constant?` treated symbols as compile-time constants,
+  ;; so the attribute map was folded at macroexpansion time and the symbol's
+  ;; *name* was emitted literally (e.g. data-id="x" instead of data-id="42").
+  (t/testing "simple: a top-level symbol attribute value"
+    (let [x 42]
+      (t/is (= "<div data-id=\"42\"></div>"
+               (str (html [:div {:data-id x}]))))))
+  (t/testing "complex: a symbol nested in a literal attribute collection"
+    ;; `(str c)` cannot rescue this case — the enclosing literal map is what
+    ;; gets folded, so the fix must recurse into collections.
+    (let [c "red"]
+      (t/is (= "<div style=\"color: red;\"></div>"
+               (str (html [:div {:style {:color c}}])))))))
 
 (t/deftest test-escaped-chars
   (t/is (= (escape-html "\"") "&quot;"))

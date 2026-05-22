@@ -50,8 +50,17 @@
    (let [m (merge base-map m)]
      (->attrs opts m))))
 
-(defn constant? [v]
-  (not (seq? v)))
+(defn constant?
+  "True when v is a literal whose value is known at macroexpansion time and can
+  therefore be folded into the attribute string at compile time. Symbols are
+  runtime references, not constants, so they (and any collection containing one)
+  must be deferred to a runtime `->attrs` call."
+  [v]
+  (cond
+    (symbol? v) false
+    (seq? v) false
+    (coll? v) (every? constant? v) ;; vectors/sets/maps (maps iterate their entries)
+    :else true))
 
 (defn- compile-attrs [opts m]
   (if (or (contains? m :&)
