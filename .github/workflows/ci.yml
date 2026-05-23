@@ -7,9 +7,10 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v3
       - name: Install clojure tools
-        uses: DeLaGuardo/setup-clojure@9.4
+        uses: DeLaGuardo/setup-clojure@13.5
         with:
           cli: latest
+          github-token: ${{ secrets.GITHUB_TOKEN }}
       - run: |
           clojure -X:test
           clojure -M:test:cljs-test-runner
