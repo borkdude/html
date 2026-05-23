@@ -77,6 +77,10 @@
     "<a href=\"http://dude\"></a>"
     (html [:a {:href (str "http://" "dude")}])
 
+    "<div color=\"blue\"></div>"
+    (let [color "blue"]
+      (html [:div {:color color}]))
+
     "<div class=\"container\"></div>"
     (html [:div.container])
 

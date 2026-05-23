@@ -4,6 +4,10 @@ Unreleased changes are available via `io.github.borkdude/html {:git/sha "..."}` 
 
 [html](https://github.com/borkdude/html): Produce HTML from hiccup in Clojure and ClojureScript
 
+## 0.2.4
+
+- Fix attribute value bound to a symbol: `(let [x "blue"] (html [:div {:color x}]))` now resolves the symbol at runtime instead of emitting its name
+
 ## 0.2.3
 
 - Make `escape-html` public ([@kanwei](https://github.com/kanwei))

@@ -51,7 +51,7 @@
      (->attrs opts m))))
 
 (defn constant? [v]
-  (not (seq? v)))
+  (not (or (seq? v) (symbol? v))))
 
 (defn- compile-attrs [opts m]
   (if (or (contains? m :&)
