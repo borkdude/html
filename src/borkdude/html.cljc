@@ -43,7 +43,7 @@
                         (str (name k)
                              "=" (cond (string? v) (pr-str (escape-html v))
                                        (keyword? v) (pr-str (name v))
-                                       (map? v) (pr-str (->css v))
+                                       (and (map? v) (= "style" (name k))) (pr-str (->css v))
                                        :else (pr-str (str v))))))
                     m))))
   ([opts m base-map]
