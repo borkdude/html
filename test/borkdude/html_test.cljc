@@ -3,6 +3,10 @@
    [borkdude.html :refer [escape-html html xml]]
    [clojure.test :as t]))
 
+(defrecord QuestionId [value]
+  Object
+  (toString [_] value))
+
 (defn child-component [{:keys [name]}]
   (html [:<> "Hello " name]))
 
@@ -85,16 +89,43 @@
     (html [:div.container])
 
     "<a class=\"bar baz quux\" id=\"foo\"></a>"
-    (html [:a#foo.bar.baz {:class "quux"}]))
-  )
+    (html [:a#foo.bar.baz {:class "quux"}])
+
+    "<div style=\"color: blue;\"></div>"
+    (html [:div {:style {:color :blue}}])
+
+    "<div style=\"color: blue;\"></div>"
+    (let [style {:color :blue}]
+      (html [:div {:style style}]))
+
+    "<input type=\"hidden\" value=\"f33b44d7\">"
+    (let [qid (->QuestionId "f33b44d7")]
+      (html [:input {:type "hidden" :value qid}]))
+
+    "<div data-foo=\"{:a 1}\"></div>"
+    (let [m {:a 1}]
+      (html [:div {:data-foo m}]))
+
+    "<input value=\"f33b44d7&quot;&quot;\">"
+    (let [qid (->QuestionId "f33b44d7\"\"")]
+      (html [:input {:value qid}]))
+
+    ;; User dynamically generates a css variable name
+    "<input style=\"--&quot;&quot;\">"
+    (let [i "\"\""
+          v (str "--" i)]
+      (html [:input {:style v}]))
+))
 
 (t/deftest test-escaped-chars
-  (t/is (= (escape-html "\"") "&quot;"))
-  (t/is (= (escape-html "<") "&lt;"))
-  (t/is (= (escape-html ">") "&gt;"))
-  (t/is (= (escape-html "&") "&amp;"))
+  (t/is (= (escape-html "\"\"") "&quot;&quot;"))
+  (t/is (= (escape-html "<<") "&lt;&lt;"))
+  (t/is (= (escape-html ">>") "&gt;&gt;"))
+  (t/is (= (escape-html "&&") "&amp;&amp;"))
   (t/is (= (escape-html "foo") "foo"))
-  (t/is (= (escape-html "'") "&apos;")))
+  (t/is (= (escape-html "''") "&apos;&apos;"))
+  (t/is (= (escape-html "\"\"") "&quot;&quot;"))
+  )
 
 (comment
   (ok)

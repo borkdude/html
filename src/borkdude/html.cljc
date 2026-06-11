@@ -11,11 +11,11 @@
   [text]
   (->
    (.. ^String (str text)
-       (replace "&"  "&amp;")
-       (replace "<"  "&lt;")
-       (replace ">"  "&gt;")
-       (replace "\"" "&quot;")
-       (replace "'" "&apos;" #_(if (= *html-mode* :sgml) "&#39;" "&apos;")))))
+       (#?(:cljs replaceAll :clj replace) "&"  "&amp;")
+       (#?(:cljs replaceAll :clj replace) "<"  "&lt;")
+       (#?(:cljs replaceAll :clj replace) ">"  "&gt;")
+       (#?(:cljs replaceAll :clj replace) "\"" "&quot;")
+       (#?(:cljs replaceAll :clj replace) "'" "&apos;" #_(if (= *html-mode* :sgml) "&#39;" "&apos;")))))
 
 (defn ->safe
   "Implementation, do not use"
@@ -43,8 +43,8 @@
                         (str (name k)
                              "=" (cond (string? v) (pr-str (escape-html v))
                                        (keyword? v) (pr-str (name v))
-                                       (and (map? v) (= "style" (name k))) (pr-str (->css v))
-                                       :else (pr-str (str v))))))
+                                       (and (map? v) (= "style" (name k))) (pr-str (escape-html (->css v)))
+                                       :else (pr-str (escape-html (str v)))))))
                     m))))
   ([opts m base-map]
    (let [m (merge base-map m)]
