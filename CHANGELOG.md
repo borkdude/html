@@ -4,6 +4,11 @@ Unreleased changes are available via `io.github.borkdude/html {:git/sha "..."}` 
 
 [html](https://github.com/borkdude/html): Produce HTML from hiccup in Clojure and ClojureScript
 
+## 0.2.5
+
+- [#16](https://github.com/borkdude/html/pull/16): only render a map attribute value as CSS when the key is `style`; other map-like values such as records now render via `str` ([@telekid](https://github.com/telekid))
+- Fix escaping in cljs when escaped characters appear more than once in string ([@telekid](https://github.com/telekid))
+
 ## 0.2.4
 
 - Fix attribute value bound to a symbol: `(let [x "blue"] (html [:div {:color x}]))` now resolves the symbol at runtime instead of emitting its name
