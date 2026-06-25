@@ -4,7 +4,7 @@ Unreleased changes are available via `io.github.borkdude/html {:git/sha "..."}` 
 
 [html](https://github.com/borkdude/html): Produce HTML from hiccup in Clojure and ClojureScript
 
-## Unreleased
+## 0.2.6
 
 - Fix #17: inline `style` map emitted a literal `\n` between declarations via `pr-str`, producing invalid CSS that dropped every declaration after the first (@cycl1st)
 
