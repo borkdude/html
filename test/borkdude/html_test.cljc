@@ -45,6 +45,9 @@
       (html [:div {:class "foo"
                    :& m}]))
 
+    "<div style=\"color: blue; font-size: 10px;\"></div>"
+    (html [:div {:style {:color :blue :font-size :10px}}])
+
     "<div class=\"&lt;script&gt;\"></div>"
     (html [:div {:class "<script>"}])
 

@@ -27,7 +27,7 @@
     :else (escape-html x)))
 
 (defn- ->css [m]
-  (str/join ""
+  (str/join " "
             (map (fn [[k v]]
                    (str (name k) ": " (name v) ";"))
                  m)))
