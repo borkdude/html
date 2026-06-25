@@ -6,7 +6,7 @@ Unreleased changes are available via `io.github.borkdude/html {:git/sha "..."}` 
 
 ## 0.2.6
 
-- Fix #17: inline `style` map emitted a literal `\n` between declarations via `pr-str`, producing invalid CSS that dropped every declaration after the first (@cycl1st)
+- Fix [#17](https://github.com/borkdude/html/issues/17): inline `style` map emitted a literal `\n` between declarations via `pr-str`, producing invalid CSS that dropped every declaration after the first ([@cycl1st](https://github.com/cycl1st))
 
 ## 0.2.5
 
