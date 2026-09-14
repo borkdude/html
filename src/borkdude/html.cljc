@@ -33,9 +33,10 @@
                  m)))
 
 (defn- string-boolean-attr? [k]
-  (or (str/starts-with? k "aria-")
-      (str/starts-with? k "data-")
-      (contains? #{"contenteditable" "draggable" "spellcheck"} k)))
+  (let [k (str/lower-case k)]
+    (or (str/starts-with? k "aria-")
+        (str/starts-with? k "data-")
+        (contains? #{"contenteditable" "draggable" "focusable" "spellcheck"} k))))
 
 (defn ->attrs
   "Implementation, do not use"

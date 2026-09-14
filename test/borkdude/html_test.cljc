@@ -113,6 +113,12 @@
     "<div draggable=\"true\"></div>"
     (html [:div {:draggable true}])
 
+    "<div spellCheck=\"false\"></div>"
+    (html [:div {:spellCheck false}])
+
+    "<svg focusable=\"false\"></svg>"
+    (html [:svg {:focusable false}])
+
     "<div data-active=\"false\"></div>"
     (html [:div {:data-active false}])
 
