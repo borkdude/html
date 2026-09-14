@@ -7,6 +7,8 @@ Unreleased changes are available via `io.github.borkdude/html {:git/sha "..."}` 
 ## Unreleased
 
 - Fix shorthand classes being dropped when the attribute map has no `:class`: `[:div.card {:id "a"}]` rendered `<div id="a">`. The same path interpolated a symbol's _name_ when `:class` was bound to an expression, so `(let [x "big"] [:div.card {:class x}])` rendered `class="card x"`.
+- Omit an attribute whose value is `nil` or `false`. `[:input {:disabled false}]` rendered `disabled="false"`, which — HTML boolean attributes being presence-based — disabled the element. An attribute map that now renders to nothing no longer leaves a stray space (`<div >`), which also fixes `[:div {}]`.
+- Render `aria-*` booleans as the strings `"true"` and `"false"`. ARIA attributes are string-valued enumerations in which absence is a distinct state, so `[:button {:aria-expanded false}]` must render `aria-expanded="false"` rather than being omitted, and `true` must render `aria-expanded="true"` rather than a bare attribute (whose empty value is invalid, and falls back to the attribute's default). `nil` still omits.
 
 ## 0.2.6
 

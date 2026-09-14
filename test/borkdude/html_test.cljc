@@ -81,6 +81,44 @@
     "<input checked=\"true\"></input>"
     (xml [:input {:checked true}])
 
+    "<input>"
+    (html [:input {:disabled false}])
+
+    "<input>"
+    (html [:input {:disabled nil}])
+
+    "<input></input>"
+    (xml [:input {:disabled nil}])
+
+    "<input type=\"text\">"
+    (html [:input {:type "text" :disabled false}])
+
+    "<input type=\"text\">"
+    (let [d false]
+      (html [:input {:type "text" :disabled d}]))
+
+    "<button aria-expanded=\"true\"></button>"
+    (html [:button {:aria-expanded true}])
+
+    "<button aria-expanded=\"false\"></button>"
+    (html [:button {:aria-expanded false}])
+
+    "<button aria-expanded=\"false\"></button>"
+    (let [b false]
+      (html [:button {:aria-expanded b}]))
+
+    "<button aria-expanded=\"true\"></button>"
+    (xml [:button {:aria-expanded true}])
+
+    "<span></span>"
+    (html [:span {:aria-label nil}])
+
+    "<div role=\"checkbox\" aria-checked=\"mixed\"></div>"
+    (html [:div {:role "checkbox" :aria-checked "mixed"}])
+
+    "<div></div>"
+    (html [:div {:data-open false}])
+
     "<a href=\"http://dude\"></a>"
     (html [:a {:href (str "http://" "dude")}])
 
@@ -99,6 +137,9 @@
 
     "<div class=\"card\"></div>"
     (html [:div.card {}])
+
+    "<div></div>"
+    (html [:div {}])
 
     "<div class=\"card big\"></div>"
     (let [x "big"]

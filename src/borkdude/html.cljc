@@ -37,18 +37,28 @@
   ([opts m]
    (let [xml? (= :xml (:mode opts))]
      (str/join " "
-               (map (fn [[k v]]
-                      (if (and (true? v) (not xml?))
-                        (name k)
-                        (str (name k)
-                             "=" (cond (string? v) (pr-str (escape-html v))
-                                       (keyword? v) (pr-str (name v))
-                                       (and (map? v) (= "style" (name k))) (pr-str (escape-html (->css v)))
-                                       :else (pr-str (escape-html (str v)))))))
-                    m))))
+               (keep (fn [[k v]]
+                       (let [k     (name k)
+                             aria? (str/starts-with? k "aria-")]
+                         (cond
+                           (nil? v) nil
+                           (and (false? v) (not aria?)) nil
+                           (and (true? v) (not xml?) (not aria?)) k
+                           :else
+                           (str k
+                                "=" (cond (string? v) (pr-str (escape-html v))
+                                          (keyword? v) (pr-str (name v))
+                                          (and (map? v) (= "style" k)) (pr-str (escape-html (->css v)))
+                                          :else (pr-str (escape-html (str v))))))))
+                     m))))
   ([opts m base-map]
    (let [m (merge base-map m)]
      (->attrs opts m))))
+
+(defn attrs-prefix
+  "Implementation, do not use"
+  [s]
+  (if (= "" s) "" (str " " s)))
 
 (defn constant? [v]
   (not (or (seq? v) (symbol? v))))
@@ -128,8 +138,8 @@
             attrs (if ?attrs
                     (let [a (compile-attrs opts ?attrs)]
                       (if (string? a)
-                        (str " " a)
-                        a))
+                        (attrs-prefix a)
+                        `(attrs-prefix ~a)))
                     "")]
         (if unsafe?
           `(->Html (str ~(first children)))
@@ -137,7 +147,7 @@
                             nil
                             (if (string? attrs)
                               [(str "<" tag attrs ">")]
-                              ["<" tag " " attrs  ">"]))
+                              ["<" tag attrs ">"]))
                         ~@(map #(list (if xml?
                                         `xml
                                         `html) %) children)
