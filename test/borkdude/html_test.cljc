@@ -113,6 +113,16 @@
     "<div draggable=\"true\"></div>"
     (html [:div {:draggable true}])
 
+    "<div data-active=\"false\"></div>"
+    (html [:div {:data-active false}])
+
+    "<div data-active=\"true\"></div>"
+    (let [a true]
+      (html [:div {:data-active a}]))
+
+    "<option></option>"
+    (html [:option {:value false}])
+
     "<div></div>"
     (html [:div {}])
 

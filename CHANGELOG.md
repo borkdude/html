@@ -7,6 +7,9 @@ Unreleased changes are available via `io.github.borkdude/html {:git/sha "..."}` 
 ## Unreleased
 
 - Fix shorthand classes being dropped when the attribute map has no `:class`: `[:div.card {:id "a"}]` rendered `<div id="a">`. The same path interpolated a symbol's _name_ when `:class` was bound to an expression, so `(let [x "big"] [:div.card {:class x}])` rendered `class="card x"`.
+- Omit attributes whose value is `nil`, or `false` in html mode: `[:input {:disabled false}]` rendered `disabled="false"`, which disables the input. This also applies to non-boolean attributes: `[:option {:value false}]` now renders `<option></option>`. Matches hiccup ([#19](https://github.com/borkdude/html/pull/19), [@telekid](https://github.com/telekid))
+- Render `true` and `false` as `"true"` and `"false"` for `aria-*`, `data-*`, `contenteditable`, `draggable` and `spellcheck`
+- Fix `[:div {}]` rendering `<div >`
 
 ## 0.2.6
 

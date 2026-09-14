@@ -34,6 +34,7 @@
 
 (defn- string-boolean-attr? [k]
   (or (str/starts-with? k "aria-")
+      (str/starts-with? k "data-")
       (contains? #{"contenteditable" "draggable" "spellcheck"} k)))
 
 (defn ->attrs
