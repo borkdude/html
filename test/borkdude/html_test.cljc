@@ -81,6 +81,45 @@
     "<input checked=\"true\"></input>"
     (xml [:input {:checked true}])
 
+    "<input>"
+    (html [:input {:disabled false}])
+
+    "<input>"
+    (html [:input {:disabled nil}])
+
+    "<input type=\"text\">"
+    (let [d false]
+      (html [:input {:type "text" :disabled d}]))
+
+    "<input disabled=\"false\"></input>"
+    (xml [:input {:disabled false}])
+
+    "<input></input>"
+    (xml [:input {:disabled nil}])
+
+    "<button aria-expanded=\"true\"></button>"
+    (html [:button {:aria-expanded true}])
+
+    "<button aria-expanded=\"false\"></button>"
+    (let [b false]
+      (html [:button {:aria-expanded b}]))
+
+    "<span></span>"
+    (html [:span {:aria-label nil}])
+
+    "<div spellcheck=\"false\"></div>"
+    (html [:div {:spellcheck false}])
+
+    "<div draggable=\"true\"></div>"
+    (html [:div {:draggable true}])
+
+    "<div></div>"
+    (html [:div {}])
+
+    "<div></div>"
+    (let [m {:disabled false}]
+      (html [:div {:& m}]))
+
     "<a href=\"http://dude\"></a>"
     (html [:a {:href (str "http://" "dude")}])
 
