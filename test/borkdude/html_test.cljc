@@ -81,6 +81,61 @@
     "<input checked=\"true\"></input>"
     (xml [:input {:checked true}])
 
+    "<input>"
+    (html [:input {:disabled false}])
+
+    "<input>"
+    (html [:input {:disabled nil}])
+
+    "<input type=\"text\">"
+    (let [d false]
+      (html [:input {:type "text" :disabled d}]))
+
+    "<input disabled=\"false\"></input>"
+    (xml [:input {:disabled false}])
+
+    "<input></input>"
+    (xml [:input {:disabled nil}])
+
+    "<button aria-expanded=\"true\"></button>"
+    (html [:button {:aria-expanded true}])
+
+    "<button aria-expanded=\"false\"></button>"
+    (let [b false]
+      (html [:button {:aria-expanded b}]))
+
+    "<span></span>"
+    (html [:span {:aria-label nil}])
+
+    "<div spellcheck=\"false\"></div>"
+    (html [:div {:spellcheck false}])
+
+    "<div draggable=\"true\"></div>"
+    (html [:div {:draggable true}])
+
+    "<div spellCheck=\"false\"></div>"
+    (html [:div {:spellCheck false}])
+
+    "<svg focusable=\"false\"></svg>"
+    (html [:svg {:focusable false}])
+
+    "<div data-active=\"false\"></div>"
+    (html [:div {:data-active false}])
+
+    "<div data-active=\"true\"></div>"
+    (let [a true]
+      (html [:div {:data-active a}]))
+
+    "<option></option>"
+    (html [:option {:value false}])
+
+    "<div></div>"
+    (html [:div {}])
+
+    "<div></div>"
+    (let [m {:disabled false}]
+      (html [:div {:& m}]))
+
     "<a href=\"http://dude\"></a>"
     (html [:a {:href (str "http://" "dude")}])
 
