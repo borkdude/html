@@ -93,14 +93,16 @@
        (.substring tag (unchecked-inc-int class-index)))]))
 
 (defn merge-attrs [attrs short-attrs]
-  (let [attrs (if-let [c (:class attrs)]
-                       (if-let [sc (:class short-attrs)]
-                         (assoc attrs :class (str sc " " c))
-                         attrs)
-                       attrs)
+  (let [attrs (if-let [sc (:class short-attrs)]
+                (if-let [c (:class attrs)]
+                  (assoc attrs :class (if (constant? c)
+                                        (str sc " " c)
+                                        `(str ~sc " " ~c)))
+                  (assoc attrs :class sc))
+                attrs)
         attrs (if-let [id (:id short-attrs (:id attrs))]
-                  (assoc attrs :id id)
-                  attrs)]
+                (assoc attrs :id id)
+                attrs)]
     attrs))
 
 (defn- ->html [opts form]
@@ -174,8 +176,7 @@
   (html [:div [:<> "hello " "there"]])
   (html [:div [[:<>script]]])
   (html [:div [:$ [:<>script]]])
-  (macroexpand-all '(html [:div ]))
+  (macroexpand-all '(html [:div]))
   (macroexpand-all '(html [:div "Hello"]))
   (html [:br])
-  (xml [:br])
-  )
+  (xml [:br]))

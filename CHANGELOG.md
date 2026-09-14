@@ -4,6 +4,10 @@ Unreleased changes are available via `io.github.borkdude/html {:git/sha "..."}` 
 
 [html](https://github.com/borkdude/html): Produce HTML from hiccup in Clojure and ClojureScript
 
+## Unreleased
+
+- Fix shorthand classes being dropped when the attribute map has no `:class`: `[:div.card {:id "a"}]` rendered `<div id="a">`. The same path interpolated a symbol's _name_ when `:class` was bound to an expression, so `(let [x "big"] [:div.card {:class x}])` rendered `class="card x"`.
+
 ## 0.2.6
 
 - Fix [#17](https://github.com/borkdude/html/issues/17): inline `style` map emitted a literal `\n` between declarations via `pr-str`, producing invalid CSS that dropped every declaration after the first ([@cycl1st](https://github.com/cycl1st))

@@ -94,6 +94,19 @@
     "<a class=\"bar baz quux\" id=\"foo\"></a>"
     (html [:a#foo.bar.baz {:class "quux"}])
 
+    "<div id=\"a\" class=\"card\"></div>"
+    (html [:div.card {:id "a"}])
+
+    "<div class=\"card\"></div>"
+    (html [:div.card {}])
+
+    "<div class=\"card big\"></div>"
+    (let [x "big"]
+      (html [:div.card {:class x}]))
+
+    "<div class=\"card big\"></div>"
+    (html [:div.card {:class (str "bi" "g")}])
+
     "<div style=\"color: blue;\"></div>"
     (html [:div {:style {:color :blue}}])
 
