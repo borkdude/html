@@ -1,3 +1,6 @@
-{:tasks {test:clj (clojure "-X:test")
+{:deps {io.github.babashka/deps-deploy {:mvn/version "0.0.1"}}
+ :tasks {test:clj (clojure "-X:test")
          test:cljs (clojure "-M:test:cljs-test-runner")
-         publish (clojure "-T:build deploy")}}
+         publish {:extra-paths ["."]
+                  :requires ([build])
+                  :task (build/deploy {})}}}
